@@ -1,6 +1,7 @@
-const axios = require("axios").default;
+import axios from "axios";
 
 const SpotifyAuth = () => {
+  document.cookie && console.log(document.cookie);
   // const accessToken = document.cookie.split("=")[1];
 
   // axios("https://api.spotify.com/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V", {
