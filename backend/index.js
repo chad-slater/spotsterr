@@ -1,16 +1,21 @@
 require("dotenv").config();
-const express = require("express");
 const axios = require("axios").default;
+const { errorHandler } = require("./middleware/errorMiddleware");
+const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const redirect_uri = "http://localhost:5000/api/callback";
+const PORT = process.env.PORT || 5000;
+const redirect_uri = "http://localhost:5000/api/spotify/callback";
 let state;
 
-app.get("/api/login", (req, res) => {
+app.use(express.json());
+
+app.use("/api/songsterr", require("./routes/songsterrRoutes"));
+
+app.get("/api/spotify/login", (req, res) => {
   console.log("Logging in!");
   state = uuidv4();
   const scope = "user-read-private user-read-email";
@@ -25,7 +30,7 @@ app.get("/api/login", (req, res) => {
   res.redirect("https://accounts.spotify.com/authorize?" + params.toString());
 });
 
-app.get("/api/callback", (req, res) => {
+app.get("/api/spotify/callback", (req, res) => {
   console.log("Calling back!");
   const cookies = {
     data: undefined,
@@ -46,7 +51,6 @@ app.get("/api/callback", (req, res) => {
     redirect_uri: redirect_uri,
     grant_type: "authorization_code",
   });
-
   const stringifiedData = data.toString();
 
   return axios
@@ -58,19 +62,23 @@ app.get("/api/callback", (req, res) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     })
-    .then(function (response) {
+    .then((response) => {
       if (response.status === 200) {
         console.log("Sending token!");
         cookies.data = response.data;
       }
       console.log(cookies.data);
-      res.cookie("spotify_auth", cookies.data.access_token);
+      res.cookie("spotify_auth", cookies.data.access_token, {
+        httpOnly: true,
+      });
       res.redirect("http://localhost:3000/");
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
     });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Spotsterr listening on port http://localhost:${PORT}`);
