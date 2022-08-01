@@ -96,7 +96,6 @@ const logIn = (req, res) => {
 // @route GET /api/spotify/refresh
 // @access Private
 const refresh = asyncHandler(async (req, res) => {
-  console.log("refreshing token");
   const refreshToken = req.cookies.spotifyRefreshToken;
 
   if (!refreshToken) {

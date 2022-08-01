@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 import SpotifyPlaylists from "../SpotifyPlaylists";
@@ -7,21 +6,14 @@ const App = () => {
   const [isSpotifyAuthorized, setIsSpotifyAuthorized] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-
-    document.cookie
-      ? setIsSpotifyAuthorized(document.cookie.split("=")[1])
-      : mounted &&
-        (async () => {
-          const response = await axios.get("/api/spotify/refresh");
-          response.status === 200 && setIsSpotifyAuthorized(true);
-        })();
-
-    return () => (mounted = false);
+    document.cookie.split("=")[0] === "isSpotifyAuthorized" &&
+      setIsSpotifyAuthorized(true);
   }, []);
 
   return (
     <>
+      <h1>Spotsterr</h1>
+      <h2>Spotify Playlists</h2>
       {!isSpotifyAuthorized && (
         <a href="http://localhost:5000/api/spotify/login">Authorize Spotify</a>
       )}
