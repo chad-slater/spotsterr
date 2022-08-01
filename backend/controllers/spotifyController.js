@@ -43,11 +43,6 @@ const callback = asyncHandler(async (req, res) => {
     }
   );
 
-  if (spotifyTokens.status !== 200) {
-    res.status(400);
-    throw new Error("Failed to authorize with Spotify");
-  }
-
   res.clearCookie("spotifyState");
   res.cookie("isSpotifyAuthorized", true, {
     maxAge: 1000 * 3600, // 1 hour
@@ -101,10 +96,16 @@ const logIn = (req, res) => {
 // @route GET /api/spotify/refresh
 // @access Private
 const refresh = asyncHandler(async (req, res) => {
+  console.log("refreshing token");
   const refreshToken = req.cookies.spotifyRefreshToken;
 
+  if (!refreshToken) {
+    res.status(400);
+    throw new Error("No refresh token");
+  }
+
   const data = new URLSearchParams({
-    grant_type: "authorization_code",
+    grant_type: "refresh_token",
     refresh_token: refreshToken,
   });
   const stringifiedData = data.toString();
@@ -121,11 +122,6 @@ const refresh = asyncHandler(async (req, res) => {
       },
     }
   );
-
-  if (spotifyTokens.status !== 200) {
-    res.status(400);
-    throw new Error("Failed to authorize with Spotify");
-  }
 
   res.cookie("isSpotifyAuthorized", true, {
     maxAge: 1000 * 3600, // 1 hour
