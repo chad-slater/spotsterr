@@ -2,42 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const Track = ({ artist, spotifyTrackId, title }) => {
+  const cleanedTitle = title.replace(/ *\([^)]*\) */g, "").split("-")[0];
   const [isLoading, setIsLoading] = useState(true);
   const [songsterrData, setSongsterrData] = useState("");
   const [spotifyAudioFeaturesData, setSpotifyAudioFeaturesData] = useState("");
   const [spotifyTrackData, setSpotifyTrackData] = useState("");
-
-  // useEffect(() => {
-  //   let mounted = true;
-
-  //   (async () => {
-  //     const { data } = await axios("/api/songsterr", {
-  //       data: { artist, title },
-  //       method: "POST",
-  //     });
-
-  //     console.log("Songsterr", data[0]);
-  //     return mounted && setSongsterrData(data[0] || 0);
-  //   })();
-
-  //   (async () => {
-  //     const { data } = await axios(`/api/spotify/tracks/${spotifyTrackId}`);
-
-  //     console.log("Spotify Track", data);
-  //     return mounted && setSpotifyTrackData(data);
-  //   })();
-
-  //   (async () => {
-  //     const { data } = await axios(
-  //       `/api/spotify/audio-features/${spotifyTrackId}`
-  //     );
-
-  //     console.log("Spotify Audio Features", data.audio_features[0].tempo);
-  //     return mounted && setSpotifyAudioFeaturesData(data);
-  //   })();
-
-  //   return () => (mounted = false);
-  // }, [artist, spotifyTrackId, title]);
 
   useEffect(() => {
     songsterrData &&
@@ -54,7 +23,7 @@ const Track = ({ artist, spotifyTrackId, title }) => {
       });
 
       console.log("Songsterr", data[0]);
-      setSongsterrData(data[0]);
+      setSongsterrData(data[0] || "No Spotsterr data");
     })();
 
     (async () => {
@@ -100,7 +69,7 @@ const Track = ({ artist, spotifyTrackId, title }) => {
       <a
         href={
           songsterrData &&
-          `http://www.songsterr.com/a/wa/song?id=${songsterrData.songId}`
+          `http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${cleanedTitle}&a=${artist}`
         }
         rel="noreferrer"
         target="_blank"
