@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import "./index.css";
+
 const Playlists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [playlists, setPlaylists] = useState(null);
@@ -25,11 +27,17 @@ const Playlists = () => {
     <p>Loading ...</p>
   ) : (
     <>
+      <h2>Your Spotify Playlists</h2>
       {playlists &&
         playlists.map((playlist) => {
           return (
-            <div key={playlist.id}>
-              <Link to={`/playlist/${playlist.id}`}>{playlist.name}</Link>
+            <div className="playlist-link" key={playlist.id}>
+              <Link
+                to={`/playlist/${playlist.id}`}
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                {playlist.name}
+              </Link>
             </div>
           );
         })}

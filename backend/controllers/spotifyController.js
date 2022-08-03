@@ -20,7 +20,7 @@ const getPlaylist = asyncHandler(async (req, res) => {
 // @desc Get current user's playlists
 // @route GET /api/spotify/me/playlists
 const getPlaylists = asyncHandler(async (req, res) => {
-  const data = await axios("https://api.spotify.com/v1/me/playlists", {
+  const data = await axios("https://api.spotify.com/v1/me/playlists?limit=50", {
     headers: {
       Authorization: "Bearer " + req.cookies.spotifyAccessToken,
     },

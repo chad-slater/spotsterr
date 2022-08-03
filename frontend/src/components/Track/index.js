@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+import "./index.css";
+
 const Track = ({ artist, spotifyTrackId, title }) => {
   const cleanedTitle = title.replace(/ *\([^)]*\) */g, "").split("-")[0];
   const [isLoading, setIsLoading] = useState(true);
@@ -45,20 +47,22 @@ const Track = ({ artist, spotifyTrackId, title }) => {
 
   return isLoading ? (
     <>
-      <div onClick={() => loadTrackData()}>
+      <div className="track" onClick={() => loadTrackData()}>
         <p>Artist: {artist}</p>
         <p>Track: {title}</p>
       </div>
     </>
   ) : (
-    <>
+    <div className="track">
       <p>Artist: {artist}</p>
       <p>Track: {title}</p>
       <img
-        src={spotifyTrackData && spotifyTrackData.album.images.at(-1).url}
+        src={spotifyTrackData && spotifyTrackData.album.images.at(-2).url}
         alt={`${spotifyTrackData && spotifyTrackData.artists[0].name} - ${
           spotifyTrackData.name
         } album art`}
+        width="200"
+        height="200"
       />
       <p>
         Tempo: ~
@@ -76,7 +80,7 @@ const Track = ({ artist, spotifyTrackId, title }) => {
       >
         Get tabs
       </a>
-    </>
+    </div>
   );
 };
 export default Track;
