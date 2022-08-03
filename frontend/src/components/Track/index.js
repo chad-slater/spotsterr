@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import "./index.css";
+import { pitch, tuningToPitch } from "../../utils";
 
 const Track = ({ artist, spotifyTrackId, title }) => {
   const cleanedTitle = title.replace(/ *\([^)]*\) */g, "").split("-")[0];
@@ -24,8 +25,8 @@ const Track = ({ artist, spotifyTrackId, title }) => {
         method: "POST",
       });
 
-      console.log("Songsterr", data[0]);
-      setSongsterrData(data[0] || "No Spotsterr data");
+      console.log("Songsterr data", data);
+      data.length > 0 ? setSongsterrData(data[0]) : setSongsterrData(-1);
     })();
 
     (async () => {
@@ -40,7 +41,7 @@ const Track = ({ artist, spotifyTrackId, title }) => {
         `/api/spotify/audio-features/${spotifyTrackId}`
       );
 
-      console.log("Spotify Audio Features", data.audio_features[0].tempo);
+      console.log("Spotify Audio Features", data.audio_features[0]);
       setSpotifyAudioFeaturesData(data);
     })();
   };
@@ -57,24 +58,23 @@ const Track = ({ artist, spotifyTrackId, title }) => {
       <p>Artist: {artist}</p>
       <p>Track: {title}</p>
       <img
-        src={spotifyTrackData && spotifyTrackData.album.images.at(-2).url}
-        alt={`${spotifyTrackData && spotifyTrackData.artists[0].name} - ${
-          spotifyTrackData.name
-        } album art`}
+        src={spotifyTrackData.album.images.at(-2).url}
+        alt={`${spotifyTrackData.artists[0].name} - ${spotifyTrackData.name} album art`}
         width="200"
         height="200"
       />
       <p>
-        Tempo: ~
-        {spotifyAudioFeaturesData &&
-          Math.round(spotifyAudioFeaturesData.audio_features[0].tempo)}{" "}
+        Key: {pitch[Math.round(spotifyAudioFeaturesData.audio_features[0].key)]}
+      </p>
+      {songsterrData !== -1 && (
+        <p>Tuning: {tuningToPitch(songsterrData.tracks[0].tuning).join(" ")}</p>
+      )}
+      <p>
+        Tempo: ~{Math.round(spotifyAudioFeaturesData.audio_features[0].tempo)}{" "}
         BPM
       </p>
       <a
-        href={
-          songsterrData &&
-          `http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${cleanedTitle}&a=${artist}`
-        }
+        href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${cleanedTitle}&a=${artist}`}
         rel="noreferrer"
         target="_blank"
       >

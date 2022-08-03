@@ -36,7 +36,7 @@ const App = () => {
         <a href="http://localhost:5000/api/spotify/login">Authorize Spotify</a>
       )}
 
-      <Outlet />
+      {isSpotifyAuth && <Outlet />}
     </>
   );
 };
