@@ -1,31 +1,39 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-import { cookiesToObj } from "../../utils";
-import SpotifyPlaylists from "../SpotifyPlaylists";
+import Playlists from "../Playlists";
 import Track from "../Track";
 
 const App = () => {
-  const [isSpotifyAccess, setIsSpotifyAccess] = useState(false);
-  const [isSpotifyRefresh, setIsSpotifyRefresh] = useState(false);
+  const [authCookies, setAuthCookies] = useState(null);
+  const [isSpotifyAuth, setIsSpotifyAuth] = useState(false);
 
   useEffect(() => {
-    const cookies = cookiesToObj;
-
-    cookies.hasOwnProperty("isSpotifyAccess")
-      ? setIsSpotifyAccess(true)
-      : setIsSpotifyAccess(false);
-    cookies.hasOwnProperty("isSpotifyRefresh")
-      ? setIsSpotifyRefresh(true)
-      : setIsSpotifyRefresh(false);
-    // (async () => axios("/api/spotify/refresh"))();
+    (async () => {
+      const { data } = await axios("/api/spotify/check");
+      setAuthCookies(data);
+    })();
   }, []);
+
+  useEffect(() => {
+    if (authCookies) {
+      authCookies.spotifyAccessToken && setIsSpotifyAuth(true);
+
+      if (authCookies.spotifyRefreshToken && !authCookies.spotifyAccessToken) {
+        (async () => {
+          axios("/api/spotify/refresh");
+        })();
+        setIsSpotifyAuth(true);
+      }
+
+      !authCookies.spotifyRefreshToken && setIsSpotifyAuth(false);
+    }
+  }, [authCookies]);
 
   return (
     <>
       {/* <h1>Spotsterr</h1>
       <h2>Spotify Playlists</h2> */}
-      {!isSpotifyAccess && (
+      {!isSpotifyAuth && (
         <a href="http://localhost:5000/api/spotify/login">Authorize Spotify</a>
       )}
       {/* <SpotifyPlaylists isSpotifyAccess={isSpotifyAccess} /> */}

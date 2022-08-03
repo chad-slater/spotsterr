@@ -1,26 +1,10 @@
-export const cookiesToObj = document.cookie
-  .split("; ")
-  .reduce((prev, current) => {
-    const [name, ...value] = current.split("=");
-    prev[name] = value.join("=");
-    return prev;
-  }, {});
-
 export const instruments = {
-  4: "Piano Electric Honher Electra",
-  14: "Tubular Bells",
   25: "Guitar Acoustic Steel",
   26: "Guitar Jazz",
   27: "Guitar Clean",
   30: "Guitar Distortion/Overdriven",
   33: "Bass Electric Finger",
   34: "Bass Electric",
-  44: "Strings Tremolo",
-  66: "Vocals Sax Tenor",
-  67: "Vocals Sax Baritone",
-  74: "Recorder",
-  81: "Vocals Sax/Clarinet Tenor",
-  85: "Vocals Lead 6",
   1024: "Drums",
 };
 
