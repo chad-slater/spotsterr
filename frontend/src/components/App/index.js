@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Playlists from "../Playlists";
-import Track from "../Track";
+import { Outlet } from "react-router-dom";
 
 const App = () => {
   const [authCookies, setAuthCookies] = useState(null);
@@ -31,17 +30,13 @@ const App = () => {
 
   return (
     <>
-      {/* <h1>Spotsterr</h1>
-      <h2>Spotify Playlists</h2> */}
+      <h1>Spotsterr</h1>
+
       {!isSpotifyAuth && (
         <a href="http://localhost:5000/api/spotify/login">Authorize Spotify</a>
       )}
-      {/* <SpotifyPlaylists isSpotifyAccess={isSpotifyAccess} /> */}
-      <Track
-        artist="Lorna Shore"
-        spotifyId="0O26gtfjuscAOnQobjNPPL"
-        title={"To the Hellfire"}
-      />
+
+      <Outlet />
     </>
   );
 };

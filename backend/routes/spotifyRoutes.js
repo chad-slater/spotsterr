@@ -9,6 +9,7 @@ const {
 
 const {
   getAudioFeatures,
+  getPlaylist,
   getPlaylists,
   getTrack,
 } = require("../controllers/spotifyController");
@@ -18,8 +19,9 @@ router.get("/check", check);
 router.get("/login", logIn);
 router.get("/refresh", refresh);
 
-router.get("/audio-features/:id", getAudioFeatures);
+router.get("/audio-features/:trackId", getAudioFeatures);
+router.get("/playlists/:playlistId", getPlaylist);
 router.get("/me/playlists", getPlaylists);
-router.get("/tracks/:id", getTrack);
+router.get("/tracks/:trackId", getTrack);
 
 module.exports = router;
