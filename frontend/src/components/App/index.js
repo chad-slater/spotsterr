@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const App = () => {
   const [authCookies, setAuthCookies] = useState(null);
@@ -30,7 +30,11 @@ const App = () => {
 
   return (
     <>
-      <h1>Spotsterr</h1>
+      <h1>
+        <Link to={"/"} style={{ color: "inherit", textDecoration: "none" }}>
+          Spotsterr
+        </Link>
+      </h1>
 
       {!isSpotifyAuth && (
         <a href="http://localhost:5000/api/spotify/login">Authorize Spotify</a>

@@ -13,9 +13,9 @@ root.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<Playlists />} />
+        <Route path="/playlist/:playlistId" element={<Playlist />} />
+        <Route path="*" element={<FourOhFour />} />
       </Route>
-      <Route path="/playlist/:playlistId" element={<Playlist />} />
-      <Route path="*" element={<FourOhFour />} />
     </Routes>
   </BrowserRouter>
 );

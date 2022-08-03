@@ -28,6 +28,7 @@ const Playlist = () => {
     <p>Loading...</p>
   ) : (
     <>
+      <h2>Your Spotify Playlist - {playlistData.name}</h2>
       {playlistData.tracks.items.map((track) => {
         return (
           <Track
