@@ -6,9 +6,8 @@ const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 const redirect_uri = "http://localhost:5000/api/spotify/callback";
 
-// @desc Callback to Spotify
+// @desc Get access tokens from Spotify
 // @route GET /api/spotify/callback
-// @access Private
 const callback = asyncHandler(async (req, res) => {
   const code = req.query.code || null;
   const reqState = req.query.state || null;
@@ -44,22 +43,22 @@ const callback = asyncHandler(async (req, res) => {
   );
 
   res.clearCookie("spotifyState");
-  res.cookie("isSpotifyAuthorized", true, {
-    maxAge: 1000 * 3600, // 1 hour
-  });
   res.cookie("spotifyAccessToken", spotifyTokens.data.access_token, {
     httpOnly: true,
+    maxAge: 1000 * 3600, // 1 hour
+  });
+  res.cookie("isSpotifyAccess", true, {
     maxAge: 1000 * 3600, // 1 hour
   });
   res.cookie("spotifyRefreshToken", spotifyTokens.data.refresh_token, {
     httpOnly: true,
   });
+  res.cookie("isSpotifyRefresh", true);
   res.redirect("http://localhost:3000/");
 });
 
 // @desc Get current user's playlists
 // @route GET /api/spotify/me/playlists
-// @access Private
 const getPlaylists = asyncHandler(async (req, res) => {
   const data = await axios("https://api.spotify.com/v1/me/playlists", {
     headers: {
@@ -70,9 +69,37 @@ const getPlaylists = asyncHandler(async (req, res) => {
   res.json(data.data);
 });
 
+// @desc Get Spotify Track from ID
+// @route GET /api/spotify/tracks/:id
+const getTrack = asyncHandler(async (req, res) => {
+  const trackId = req.params.id;
+  const data = await axios(`https://api.spotify.com/v1/tracks/${trackId}`, {
+    headers: {
+      Authorization: "Bearer " + req.cookies.spotifyAccessToken,
+    },
+  });
+
+  res.json(data.data);
+});
+
+// @desc Get Spotify Track from ID
+// @route GET /api/spotify/audio-features/:id
+const getAudioFeatures = asyncHandler(async (req, res) => {
+  const trackId = req.params.id;
+  const data = await axios(
+    `https://api.spotify.com/v1/audio-features?ids=${trackId}`,
+    {
+      headers: {
+        Authorization: "Bearer " + req.cookies.spotifyAccessToken,
+      },
+    }
+  );
+
+  res.json(data.data);
+});
+
 // @desc Log in to Spotify
 // @route GET /api/spotify/login
-// @access Public
 const logIn = (req, res) => {
   const state = uuidv4();
   const scope =
@@ -94,7 +121,6 @@ const logIn = (req, res) => {
 
 // @desc Refresh Spotify access token
 // @route GET /api/spotify/refresh
-// @access Private
 const refresh = asyncHandler(async (req, res) => {
   const refreshToken = req.cookies.spotifyRefreshToken;
 
@@ -122,7 +148,7 @@ const refresh = asyncHandler(async (req, res) => {
     }
   );
 
-  res.cookie("isSpotifyAuthorized", true, {
+  res.cookie("isSpotifyAccess", true, {
     maxAge: 1000 * 3600, // 1 hour
   });
   res.cookie("spotifyAccessToken", spotifyTokens.data.access_token, {
@@ -134,7 +160,9 @@ const refresh = asyncHandler(async (req, res) => {
 
 module.exports = {
   callback,
+  getAudioFeatures,
   getPlaylists,
+  getTrack,
   logIn,
   refresh,
 };

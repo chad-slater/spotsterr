@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const SpotifyPlaylists = ({ isSpotifyAuthorized }) => {
+const SpotifyPlaylists = ({ isSpotifyAccess }) => {
   const [playlists, setPlaylists] = useState(null);
 
   useEffect(() => {

@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const Track = ({ artist, title }) => {
-  const [track, setTrack] = useState("");
+const Track = ({ artist, spotifyId, title }) => {
+  const [loading, setLoading] = useState(true);
+  const [songsterrData, setSongsterrData] = useState("");
+  const [spotifyAudioFeaturesData, setSpotifyAudioFeaturesData] = useState("");
+  const [spotifyTrackData, setSpotifyTrackData] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -13,23 +16,57 @@ const Track = ({ artist, title }) => {
         method: "POST",
       });
 
-      console.log(data.data[0]);
-      return mounted && setTrack(data.data[0]);
+      console.log("Songsterr", data.data[0]);
+      return mounted && setSongsterrData(data.data[0]);
+    })();
+
+    (async () => {
+      const data = await axios(`api/spotify/tracks/${spotifyId}`);
+
+      console.log("Spotify Track", data.data);
+      return mounted && setSpotifyTrackData(data.data);
+    })();
+
+    (async () => {
+      const data = await axios(`/api/spotify/audio-features/${spotifyId}`);
+
+      console.log("Spotify Audio Features", data.data.audio_features[0].tempo);
+      return mounted && setSpotifyAudioFeaturesData(data.data);
     })();
 
     return () => (mounted = false);
-  }, [artist, title]);
+  }, [artist, spotifyId, title]);
 
-  return (
-    <div>
+  useEffect(() => {
+    songsterrData &&
+      spotifyAudioFeaturesData &&
+      spotifyTrackData &&
+      setLoading(false);
+  }, [songsterrData, spotifyAudioFeaturesData, spotifyTrackData]);
+
+  return loading ? (
+    <p>Loading ...</p>
+  ) : (
+    <>
+      <img
+        src={spotifyTrackData && spotifyTrackData.album.images.at(-1).url}
+        alt={`${spotifyTrackData && spotifyTrackData.artists[0].name} - ${
+          spotifyTrackData.name
+        } album art`}
+      />
+      <p>Artist: {spotifyTrackData && spotifyTrackData.artists[0].name}</p>
+      <p>Track: {spotifyTrackData && spotifyTrackData.name}</p>
       <a
-        href={`http://www.songsterr.com/a/wa/song?id=${track.songId}`}
+        href={
+          songsterrData &&
+          `http://www.songsterr.com/a/wa/song?id=${songsterrData.songId}`
+        }
         rel="noreferrer"
         target="_blank"
       >
         Get tabs
       </a>
-    </div>
+    </>
   );
 };
 export default Track;

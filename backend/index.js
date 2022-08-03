@@ -1,5 +1,4 @@
 require("dotenv").config();
-const axios = require("axios").default;
 const { errorHandler } = require("./middleware/errorMiddleware");
 const cookieParser = require("cookie-parser");
 const express = require("express");
