@@ -13,6 +13,7 @@ const Playlists = () => {
 
     (async () => {
       const { data } = await axios("/api/spotify/me/playlists");
+
       return mounted && setPlaylists(data.items);
     })();
 

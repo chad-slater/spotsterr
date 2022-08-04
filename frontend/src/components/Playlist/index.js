@@ -14,6 +14,7 @@ const Playlist = () => {
 
     (async () => {
       const { data } = await axios(`/api/spotify/playlists/${playlistId}`);
+
       return mounted && setPlaylistData(data);
     })();
 
@@ -30,12 +31,16 @@ const Playlist = () => {
     <>
       <h2>Your Spotify Playlist - {playlistData.name}</h2>
       {playlistData.tracks.items.map((track) => {
+        const trackInfo = track.track;
+
         return (
           <Track
-            key={track.track.id}
-            artist={track.track.artists[0].name}
-            spotifyTrackId={track.track.id}
-            title={track.track.name}
+            key={trackInfo.id}
+            album={trackInfo.album.name}
+            albumArtUrl={trackInfo.album.images[0].url}
+            artist={trackInfo.artists[0].name}
+            spotifyTrackId={trackInfo.id}
+            title={trackInfo.name}
           />
         );
       })}
