@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
+import { loginUrl } from "../../utils";
+
 const App = () => {
   const [authCookies, setAuthCookies] = useState(null);
   const [isSpotifyAuth, setIsSpotifyAuth] = useState(false);
@@ -36,9 +38,7 @@ const App = () => {
         </Link>
       </h1>
 
-      {!isSpotifyAuth && (
-        <a href="http://localhost:5000/api/spotify/login">Authorize Spotify</a>
-      )}
+      {!isSpotifyAuth && <a href={loginUrl}>Authorize Spotify</a>}
 
       {isSpotifyAuth && <Outlet />}
     </>

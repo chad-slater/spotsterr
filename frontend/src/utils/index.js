@@ -1,3 +1,5 @@
+export const loginUrl = process.env.REACT_APP_LOGIN_URL;
+
 export const instruments = {
   25: "Guitar Acoustic Steel",
   26: "Guitar Jazz",
