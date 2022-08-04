@@ -9,25 +9,35 @@ const App = () => {
   const [isSpotifyAuth, setIsSpotifyAuth] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      const { data } = await axios("/api/spotify/check");
-      setAuthCookies(data);
-    })();
+    let mounted = true;
+
+    mounted &&
+      (async () => {
+        const { data } = await axios("/api/spotify/check");
+        setAuthCookies(data);
+      })();
+
+    return () => (mounted = false);
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+
     if (authCookies) {
       authCookies.spotifyAccessToken && setIsSpotifyAuth(true);
 
       if (authCookies.spotifyRefreshToken && !authCookies.spotifyAccessToken) {
-        (async () => {
-          axios("/api/spotify/refresh");
-        })();
+        mounted &&
+          (async () => {
+            await axios("/api/spotify/refresh");
+          })();
         setIsSpotifyAuth(true);
       }
 
       !authCookies.spotifyRefreshToken && setIsSpotifyAuth(false);
     }
+
+    return () => (mounted = false);
   }, [authCookies]);
 
   return (
