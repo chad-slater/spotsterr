@@ -4,7 +4,14 @@ const { v4: uuidv4 } = require("uuid");
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const redirect_uri = "http://localhost:5000/api/spotify/callback";
+const frontend_redirect_uri =
+  process.env.NODE_ENV === "production"
+    ? "https://spotsterr.herokuapp.com/"
+    : "http://localhost:3000/";
+const spotify_redirect_uri =
+  process.env.NODE_ENV === "production"
+    ? "https://spotsterr.herokuapp.com/api/spotify/callback"
+    : "http://localhost:5000/api/spotify/callback";
 
 // @desc Get access tokens from Spotify
 // @route GET /api/spotify/callback
@@ -25,7 +32,7 @@ const callback = asyncHandler(async (req, res) => {
   const data = new URLSearchParams({
     code: code,
     grant_type: "authorization_code",
-    redirect_uri: redirect_uri,
+    redirect_uri: spotify_redirect_uri,
   });
   const stringifiedData = data.toString();
 
@@ -50,7 +57,7 @@ const callback = asyncHandler(async (req, res) => {
   res.cookie("spotifyRefreshToken", spotifyTokens.data.refresh_token, {
     httpOnly: true,
   });
-  res.redirect("http://localhost:3000/");
+  res.redirect(frontend_redirect_uri);
 });
 
 // @desc Check for httpOnly cookies
@@ -72,7 +79,7 @@ const logIn = (req, res) => {
     "user-read-private user-read-email playlist-read-private playlist-read-collaborative";
   const params = new URLSearchParams({
     client_id: client_id,
-    redirect_uri: redirect_uri,
+    redirect_uri: spotify_redirect_uri,
     response_type: "code",
     scope: scope,
     state: state,
@@ -118,7 +125,7 @@ const refresh = asyncHandler(async (req, res) => {
     httpOnly: true,
     maxAge: 1000 * 3600, // 1 hour
   });
-  res.redirect("http://localhost:3000/");
+  res.redirect(frontend_redirect_uri);
 });
 
 module.exports = {
