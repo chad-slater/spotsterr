@@ -54,9 +54,13 @@ const callback = asyncHandler(async (req, res) => {
     httpOnly: true,
     maxAge: 1000 * 3600, // 1 hour
   });
+  res.cookie("isSpotifyAccessToken", true, {
+    maxAge: 1000 * 3600, // 1 hour
+  });
   res.cookie("spotifyRefreshToken", spotifyTokens.data.refresh_token, {
     httpOnly: true,
   });
+  res.cookie("isSpotifyRefreshToken", true);
   res.redirect(frontend_redirect_uri);
 });
 
@@ -123,6 +127,9 @@ const refresh = asyncHandler(async (req, res) => {
 
   res.cookie("spotifyAccessToken", spotifyTokens.data.access_token, {
     httpOnly: true,
+    maxAge: 1000 * 3600, // 1 hour
+  });
+  res.cookie("isSpotifyAccessToken", true, {
     maxAge: 1000 * 3600, // 1 hour
   });
   res.redirect(frontend_redirect_uri);
