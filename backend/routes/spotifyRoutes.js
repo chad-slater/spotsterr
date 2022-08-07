@@ -22,6 +22,6 @@ router.get("/refresh", refresh);
 router.get("/audio-features/:trackId", getAudioFeatures);
 router.get("/playlists/:playlistId", getPlaylist);
 router.get("/me/playlists", getPlaylists);
-router.get("/tracks/:trackId", getTrack);
+router.get("/track/:trackId", getTrack);
 
 module.exports = router;

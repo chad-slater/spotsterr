@@ -1,50 +1,79 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import "./index.css";
-import { pitch, tuningToPitch } from "../../utils";
+import { cleanTitle, pitch, tuningToPitch } from "../../utils";
 
-const Track = ({ album, albumArtUrl, artist, spotifyTrackId, title }) => {
-  const cleanedTitle = title
-    .replace(/ *\([^)]*\) */g, "")
-    .split("-")[0]
-    .trim();
+const Track = () => {
+  const { trackId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [songsterrData, setSongsterrData] = useState("");
   const [spotifyAudioFeaturesData, setSpotifyAudioFeaturesData] = useState("");
+  const [spotifyTrackData, setSpotifyTrackData] = useState("");
 
   useEffect(() => {
-    songsterrData && spotifyAudioFeaturesData && setIsLoading(false);
-  }, [songsterrData, spotifyAudioFeaturesData]);
+    let mounted = true;
 
-  const loadTrackData = () => {
-    (async () => {
-      const { data } = await axios("/api/songsterr", {
-        data: { artist, title: cleanedTitle },
-        method: "POST",
-      });
+    mounted &&
+      (async () => {
+        const { data } = await axios(`/api/spotify/audio-features/${trackId}`);
 
-      data.length > 0 ? setSongsterrData(data[0]) : setSongsterrData(-1);
-    })();
+        setSpotifyAudioFeaturesData(data);
+      })();
 
-    (async () => {
-      const { data } = await axios(
-        `/api/spotify/audio-features/${spotifyTrackId}`
-      );
+    mounted &&
+      (async () => {
+        const { data } = await axios(`/api/spotify/track/${trackId}`);
+        const cleanedTitle = cleanTitle(data.name);
 
-      setSpotifyAudioFeaturesData(data);
-    })();
-  };
+        setSpotifyTrackData({
+          album: data.album.name,
+          albumArtUrl: data.album.images[0].url,
+          artist: data.artists[0].name,
+          title: cleanedTitle,
+        });
+      })();
+
+    return () => (mounted = false);
+  }, [trackId]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    mounted &&
+      spotifyTrackData &&
+      (async () => {
+        const artist = spotifyTrackData.artist;
+        const title = spotifyTrackData.title;
+
+        const { data } = await axios("/api/songsterr", {
+          data: { artist, title },
+          method: "POST",
+        });
+
+        data.length > 0 ? setSongsterrData(data[0]) : setSongsterrData(-1);
+      })();
+
+    return () => (mounted = false);
+  }, [spotifyTrackData]);
+
+  useEffect(() => {
+    songsterrData &&
+      spotifyAudioFeaturesData &&
+      spotifyTrackData &&
+      setIsLoading(false);
+  }, [songsterrData, spotifyAudioFeaturesData, spotifyTrackData]);
 
   const trackInfo = () => {
     return (
       <>
-        <p>Artist: {artist}</p>
-        <p>Album: {album}</p>
-        <p>Track: {title}</p>
+        <p>Artist: {spotifyTrackData.artist}</p>
+        <p>Album: {spotifyTrackData.album}</p>
+        <p>Track: {spotifyTrackData.title}</p>
         <img
-          src={albumArtUrl}
-          alt={`${artist} - ${title} album art`}
+          src={spotifyTrackData.albumArtUrl}
+          alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
           width="200"
           height="200"
         />
@@ -54,9 +83,7 @@ const Track = ({ album, albumArtUrl, artist, spotifyTrackId, title }) => {
 
   return isLoading ? (
     <>
-      <div className="track" onClick={() => loadTrackData()}>
-        {trackInfo()}
-      </div>
+      <div className="track">{trackInfo()}</div>
     </>
   ) : (
     <div className="track">
@@ -72,7 +99,7 @@ const Track = ({ album, albumArtUrl, artist, spotifyTrackId, title }) => {
         BPM
       </p>
       <a
-        href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${cleanedTitle}&a=${artist}`}
+        href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${spotifyTrackData.title}&a=${spotifyTrackData.artist}`}
         rel="noreferrer"
         target="_blank"
       >
