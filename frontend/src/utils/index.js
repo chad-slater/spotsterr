@@ -1,10 +1,15 @@
-export const cookiesToObj = (documentCookie) => {
-  return document.cookie.split("; ").reduce((prev, current) => {
+export const cleanTitle = (title) =>
+  title
+    .replace(/ *\([^)]*\) */g, "")
+    .split("-")[0]
+    .trim();
+
+export const cookiesToObj = (documentCookie) =>
+  document.cookie.split("; ").reduce((prev, current) => {
     const [name, ...value] = current.split("=");
     prev[name] = value.join("=");
     return prev;
   }, {});
-};
 
 export const loginUrl = process.env.REACT_APP_LOGIN_URL;
 

@@ -18,8 +18,8 @@ const App = () => {
         mounted &&
           (async () => {
             await axios("/api/spotify/refresh");
+            setIsSpotifyAuth(true);
           })();
-        setIsSpotifyAuth(true);
       }
 
       !cookies.isSpotifyRefreshToken && setIsSpotifyAuth(false);
@@ -29,17 +29,15 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <h1>
-        <Link to={"/"} style={{ color: "inherit", textDecoration: "none" }}>
-          Spotsterr
-        </Link>
+    <div className="container mx-auto px-4">
+      <h1 className="font-bold my-4 text-4xl text-center">
+        <Link to={"/"}>Spotsterr</Link>
       </h1>
 
       {!isSpotifyAuth && <a href={loginUrl}>Authorize Spotify</a>}
 
       {isSpotifyAuth && <Outlet />}
-    </>
+    </div>
   );
 };
 export default App;

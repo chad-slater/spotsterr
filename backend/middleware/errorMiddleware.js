@@ -1,5 +1,10 @@
 const errorHandler = (err, req, res, next) => {
-  const statusCode = res.statusCode ? res.statusCode : 500;
+  const refreshToken = req.cookies.spotifyRefreshToken;
+  const statusCode = err.statusCode ? err.statusCode : 500;
+
+  if (refreshToken && statusCode === 401) {
+    res.redirect("/api/spotify/refresh");
+  }
 
   res.status(statusCode).json({
     message: err.message,
