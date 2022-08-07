@@ -30,7 +30,7 @@ const getPlaylist = asyncHandler(async (req, res, next) => {
 
 // @desc Get current user's playlists
 // @route GET /api/spotify/me/playlists
-const getPlaylists = asyncHandler(async (req, res) => {
+const getPlaylists = asyncHandler(async (req, res, next) => {
   try {
     const data = await axios("https://api.spotify.com/v1/me/playlists", {
       headers: {
@@ -49,7 +49,7 @@ const getPlaylists = asyncHandler(async (req, res) => {
 
 // @desc Get Spotify Track from ID
 // @route GET /api/spotify/track/:id
-const getTrack = asyncHandler(async (req, res) => {
+const getTrack = asyncHandler(async (req, res, next) => {
   try {
     const trackId = req.params.trackId;
     const data = await axios(`https://api.spotify.com/v1/tracks/${trackId}`, {

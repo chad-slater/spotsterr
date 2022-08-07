@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { cleanTitle, pitch, tuningToPitch } from "../../utils";
+import { cleanTitle, pitch, tuningNames, tuningToPitch } from "../../utils";
 
 const Track = () => {
   const { trackId } = useParams();
@@ -51,7 +51,30 @@ const Track = () => {
           method: "POST",
         });
 
-        data.length > 0 ? setSongsterrData(data[0]) : setSongsterrData(-1);
+        if (data.length > 0) {
+          const guitar = data[0].tracks.find(
+            (track) => track.tuning.length >= 6
+          );
+          const bass = data[0].tracks.find(
+            (track) => track.tuning.length === 4 || track.tuning.length === 5
+          );
+
+          const guitarPitch = tuningToPitch(guitar.tuning).join(" ");
+          const bassPitch = tuningToPitch(bass.tuning).join(" ");
+
+          return setSongsterrData({
+            guitarTuning: {
+              name: tuningNames[guitarPitch],
+              tuning: guitarPitch,
+            },
+            bassTuning: {
+              name: tuningNames[bassPitch],
+              tuning: bassPitch,
+            },
+          });
+        }
+
+        setSongsterrData(-1);
       })();
 
     return () => (mounted = false);
@@ -80,8 +103,17 @@ const Track = () => {
       <p>
         Key: {pitch[Math.round(spotifyAudioFeaturesData.audio_features[0].key)]}
       </p>
-      {songsterrData !== -1 && (
-        <p>Tuning: {tuningToPitch(songsterrData.tracks[0].tuning).join(" ")}</p>
+      {songsterrData !== -1 && songsterrData.guitarTuning && (
+        <p>
+          Guitar:
+          {` ${songsterrData.guitarTuning.name} (${songsterrData.guitarTuning.tuning})`}
+        </p>
+      )}
+      {songsterrData !== -1 && songsterrData.bassTuning && (
+        <p>
+          Bass:
+          {` ${songsterrData.bassTuning.name} (${songsterrData.bassTuning.tuning})`}
+        </p>
       )}
       <p>
         Tempo: ~{Math.round(spotifyAudioFeaturesData.audio_features[0].tempo)}{" "}

@@ -45,40 +45,26 @@ const Playlist = () => {
         </thead>
         <tbody>
           {playlistData.tracks.items.map((track) => {
-            const trackData = track.track;
+            const { id: trackId, name: title, artists, album } = track.track;
 
             return (
               <tr
                 className="hover:bg-slate-100 hover:cursor-pointer"
-                key={trackData.id}
-                onClick={() => handleRowClick(trackData.id)}
+                key={trackId}
+                onClick={() => handleRowClick(trackId)}
               >
-                <td className="p-4 truncate">{trackData.name}</td>
+                <td className="p-4 truncate">{title}</td>
                 <td className="hidden p-4 truncate sm:table-cell">
-                  {trackData.artists[0].name}
+                  {artists[0].name}
                 </td>
                 <td className="hidden p-4 truncate md:table-cell">
-                  {trackData.album.name}
+                  {album.name}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      {/* {playlistData.tracks.items.map((track) => {
-        const trackInfo = track.track;
-
-        return (
-          <Track
-            key={trackInfo.id}
-            album={trackInfo.album.name}
-            albumArtUrl={trackInfo.album.images[0].url}
-            artist={trackInfo.artists[0].name}
-            spotifyTrackId={trackInfo.id}
-            title={trackInfo.name}
-          />
-        );
-      })} */}
     </>
   );
 };
