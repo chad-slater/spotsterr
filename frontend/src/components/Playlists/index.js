@@ -2,8 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import "./index.css";
-
 const Playlists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [playlists, setPlaylists] = useState(null);

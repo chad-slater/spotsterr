@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import "./index.css";
 import { cleanTitle, pitch, tuningToPitch } from "../../utils";
 
 const Track = () => {
@@ -65,29 +64,19 @@ const Track = () => {
       setIsLoading(false);
   }, [songsterrData, spotifyAudioFeaturesData, spotifyTrackData]);
 
-  const trackInfo = () => {
-    return (
-      <>
-        <p>Artist: {spotifyTrackData.artist}</p>
-        <p>Album: {spotifyTrackData.album}</p>
-        <p>Track: {spotifyTrackData.title}</p>
-        <img
-          src={spotifyTrackData.albumArtUrl}
-          alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
-          width="200"
-          height="200"
-        />
-      </>
-    );
-  };
-
   return isLoading ? (
     <>
-      <div className="track">{trackInfo()}</div>
+      <div className="track">Loading ...</div>
     </>
   ) : (
     <div className="track">
-      {trackInfo()}
+      <img
+        src={spotifyTrackData.albumArtUrl}
+        alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
+      />
+      <p>Track: {spotifyTrackData.title}</p>
+      <p>Artist: {spotifyTrackData.artist}</p>
+      <p>Album: {spotifyTrackData.album}</p>{" "}
       <p>
         Key: {pitch[Math.round(spotifyAudioFeaturesData.audio_features[0].key)]}
       </p>
