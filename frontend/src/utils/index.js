@@ -13,6 +13,15 @@ export const cookiesToObj = (documentCookie) =>
 
 export const loginUrl = process.env.REACT_APP_LOGIN_URL;
 
+export const msToMinsSecs = (ms) => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = ((ms % 60000) / 1000).toFixed(0);
+
+  return seconds === 60
+    ? minutes + 1 + ":00"
+    : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+};
+
 export const pitch = [
   "C",
   "C#",

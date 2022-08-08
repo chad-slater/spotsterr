@@ -11,6 +11,7 @@ const Playlists = () => {
 
     (async () => {
       const { data } = await axios("/api/spotify/me/playlists");
+
       return mounted && setPlaylists(data.items);
     })();
 
@@ -25,17 +26,29 @@ const Playlists = () => {
     <p>Loading ...</p>
   ) : (
     <>
-      <h2 className="font-bold mb-2 text-xl text-center">
+      <h2 className="font-bold mb-8 text-xl text-center">
         Your Spotify Playlists
       </h2>
-      {playlists &&
-        playlists.map((playlist) => {
-          return (
-            <div className="playlist-link" key={playlist.id}>
-              <Link to={`/playlist/${playlist.id}`}>{playlist.name}</Link>
-            </div>
-          );
-        })}
+      <div className="gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+        {playlists &&
+          playlists.map((playlist) => {
+            return (
+              <div
+                className="bg-slate-200 overflow-hidden p-3 rounded-xl text-center"
+                key={playlist.id}
+              >
+                <Link to={`/playlist/${playlist.id}`}>
+                  <img
+                    className="rounded-xl"
+                    src={playlist.images[0].url}
+                    alt={`${playlist.name} playlist`}
+                  />
+                  <h3 className="font-medium my-4 truncate">{playlist.name}</h3>
+                </Link>
+              </div>
+            );
+          })}
+      </div>
     </>
   );
 };

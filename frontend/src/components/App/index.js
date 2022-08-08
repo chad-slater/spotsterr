@@ -29,7 +29,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 w-full">
       <h1 className="font-bold my-4 text-4xl text-center">
         <Link to={"/"}>Spotsterr</Link>
       </h1>
