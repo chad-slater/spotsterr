@@ -93,13 +93,21 @@ const Track = () => {
     </>
   ) : (
     <>
-      <header className="flex flex-col items-center justify-around my-4 sm:flex-row sm:my-8">
+      <header className="flex flex-col items-center justify-around my-4 relative sm:flex-row sm:my-8">
         <img
           className="w-1/3"
           src={spotifyTrackData.albumArtUrl}
           alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
         />
-        <div className="flex flex-col m-4">
+        <div className="flex flex-col justify-between m-4">
+          <a
+            className="absolute bg-slate-300 font-medium py-4 right-0 rounded-md text-center top-0 w-1/4 hover:bg-slate-200"
+            href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${spotifyTrackData.title}&a=${spotifyTrackData.artist}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Get tabs
+          </a>
           <h1 className="font-bold my-2 text-4xl sm:text-6xl">
             {spotifyTrackData.title}
           </h1>
@@ -107,7 +115,7 @@ const Track = () => {
         </div>
       </header>
 
-      <table className="border border-collapse border-slate-400 border-spacing-2 my-8 table-fixed text-center w-full">
+      <table className="border border-collapse border-slate-400 border-spacing-2 mx-auto my-8 table-fixed text-center w-full sm:w-1/2">
         <tbody>
           <tr>
             <th className="border bg-slate-200 border-slate-400 p-2 truncate">
@@ -151,15 +159,6 @@ const Track = () => {
           )}
         </tbody>
       </table>
-
-      <a
-        className="bg-slate-300 font-medium px-8 py-4 rounded-md hover:bg-slate-200"
-        href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${spotifyTrackData.title}&a=${spotifyTrackData.artist}`}
-        rel="noreferrer"
-        target="_blank"
-      >
-        Get tabs
-      </a>
     </>
   );
 };
