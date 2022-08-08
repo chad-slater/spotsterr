@@ -26,10 +26,8 @@ const Playlists = () => {
     <p>Loading ...</p>
   ) : (
     <>
-      <h2 className="font-bold mb-8 text-xl text-center">
-        Your Spotify Playlists
-      </h2>
-      <div className="gap-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+      <h2 className="font-bold text-xl text-center">Your Spotify Playlists</h2>
+      <div className="gap-8 grid grid-cols-1 my-8 sm:grid-cols-2 md:grid-cols-4">
         {playlists &&
           playlists.map((playlist) => {
             return (

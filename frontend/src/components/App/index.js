@@ -29,14 +29,23 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 w-full">
-      <h1 className="font-bold my-4 text-4xl text-center">
-        <Link to={"/"}>Spotsterr</Link>
-      </h1>
+    <div className="container mx-auto px-4">
+      <nav className="flex items-center justify-around">
+        <p className="font-bold my-4 text-4xl text-center">
+          <Link to={"/"}>Spotsterr</Link>
+        </p>
 
-      {!isSpotifyAuth && <a href={loginUrl}>Authorize Spotify</a>}
+        {!isSpotifyAuth && (
+          <a
+            className="bg-slate-300 font-medium px-4 py-2 rounded-md hover:bg-slate-200"
+            href={loginUrl}
+          >
+            Authorize Spotify
+          </a>
+        )}
+      </nav>
 
-      {isSpotifyAuth && <Outlet />}
+      <Outlet />
     </div>
   );
 };

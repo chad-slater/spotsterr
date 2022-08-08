@@ -89,44 +89,78 @@ const Track = () => {
 
   return isLoading ? (
     <>
-      <div className="track">Loading ...</div>
+      <div>Loading ...</div>
     </>
   ) : (
-    <div className="track">
-      <img
-        src={spotifyTrackData.albumArtUrl}
-        alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
-      />
-      <p>Track: {spotifyTrackData.title}</p>
-      <p>Artist: {spotifyTrackData.artist}</p>
-      <p>Album: {spotifyTrackData.album}</p>{" "}
-      <p>
-        Key: {pitch[Math.round(spotifyAudioFeaturesData.audio_features[0].key)]}
-      </p>
-      {songsterrData !== -1 && songsterrData.guitarTuning && (
-        <p>
-          Guitar:
-          {` ${songsterrData.guitarTuning.name} (${songsterrData.guitarTuning.tuning})`}
-        </p>
-      )}
-      {songsterrData !== -1 && songsterrData.bassTuning && (
-        <p>
-          Bass:
-          {` ${songsterrData.bassTuning.name} (${songsterrData.bassTuning.tuning})`}
-        </p>
-      )}
-      <p>
-        Tempo: ~{Math.round(spotifyAudioFeaturesData.audio_features[0].tempo)}{" "}
-        BPM
-      </p>
+    <>
+      <header className="flex flex-col items-center justify-around my-4 sm:flex-row sm:my-8">
+        <img
+          className="w-1/3"
+          src={spotifyTrackData.albumArtUrl}
+          alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
+        />
+        <div className="flex flex-col m-4">
+          <h1 className="font-bold my-2 text-4xl sm:text-6xl">
+            {spotifyTrackData.title}
+          </h1>
+          <p>{spotifyTrackData.artist}</p>
+        </div>
+      </header>
+
+      <table className="border border-collapse border-slate-400 border-spacing-2 my-8 table-fixed text-center w-full">
+        <tbody>
+          <tr>
+            <th className="border bg-slate-200 border-slate-400 p-2 truncate">
+              Key
+            </th>
+            <td className="border border-slate-400 p-2 truncate">
+              {
+                pitch[
+                  Math.round(spotifyAudioFeaturesData.audio_features[0].key)
+                ]
+              }
+            </td>
+          </tr>
+          <tr>
+            <th className="border bg-slate-200 border-slate-400 p-2 truncate">
+              Tempo
+            </th>
+            <td className="border border-slate-400 p-2 truncate">
+              ~{Math.round(spotifyAudioFeaturesData.audio_features[0].tempo)}
+            </td>
+          </tr>
+          {songsterrData !== -1 && songsterrData.guitarTuning && (
+            <tr>
+              <th className="border bg-slate-200 border-slate-400 p-2 truncate">
+                Guitar
+              </th>
+              <td className="border border-slate-400 p-2 truncate">
+                {songsterrData.guitarTuning.name}
+              </td>
+            </tr>
+          )}
+          {songsterrData !== -1 && songsterrData.bassTuning && (
+            <tr>
+              <th className="border bg-slate-200 border-slate-400 p-2 truncate">
+                Bass
+              </th>
+              <td className="border border-slate-400 p-2 truncate">
+                {songsterrData.bassTuning.name}
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+
       <a
+        className="bg-slate-300 font-medium px-8 py-4 rounded-md hover:bg-slate-200"
         href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${spotifyTrackData.title}&a=${spotifyTrackData.artist}`}
         rel="noreferrer"
         target="_blank"
       >
         Get tabs
       </a>
-    </div>
+    </>
   );
 };
 export default Track;
