@@ -4,7 +4,7 @@ export const cleanTitle = (title) =>
     .split("-")[0]
     .trim();
 
-export const cookiesToObj = (documentCookie) =>
+export const cookiesToObj = () =>
   document.cookie.split("; ").reduce((prev, current) => {
     const [name, ...value] = current.split("=");
     prev[name] = value.join("=");
