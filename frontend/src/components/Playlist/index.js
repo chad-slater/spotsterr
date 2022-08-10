@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import LoadingSpinner from "../LoadingSpinner";
 import { msToMinsSecs } from "../../utils";
 
 const Playlist = () => {
@@ -31,17 +32,17 @@ const Playlist = () => {
   };
 
   return isLoading ? (
-    <p>Loading...</p>
+    <LoadingSpinner />
   ) : (
     <>
-      <h2 className="font-bold mb-2 text-xl text-center">
+      <h2 className="font-bold my-4 text-xl text-center">
         Playlist - {playlistData.name}
       </h2>
       <table className="border border-collapse border-slate-400 border-spacing-2 my-8 table-fixed w-full">
         <thead>
           <tr className="bg-slate-200">
             <th className="p-2 w-12 md:table-cell">#</th>
-            <th className="p-2 md:table-cell">Title</th>
+            <th className="p-2 md:w-1/2 md:table-cell">Title</th>
             <th className="hidden p-2 md:table-cell">Album</th>
             <th className="flex hidden p-2 md:table-cell">Duration</th>
           </tr>

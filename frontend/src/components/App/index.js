@@ -30,22 +30,32 @@ const App = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <nav className="flex items-center justify-around">
-        <p className="font-bold my-4 text-4xl text-center">
-          <Link to={"/"}>Spotsterr</Link>
-        </p>
+      <header>
+        <nav className="flex items-center justify-around">
+          <p className="font-bold my-4 text-5xl text-center sm:text-6xl">
+            <Link to={"/"}>Spotsterr</Link>
+          </p>
+        </nav>
+      </header>
 
-        {!isSpotifyAuth && (
-          <a
-            className="bg-slate-300 font-medium px-4 py-2 rounded-md hover:bg-slate-200"
-            href={loginUrl}
-          >
-            Authorize Spotify
-          </a>
-        )}
-      </nav>
-
-      <Outlet />
+      <main>
+        <div className="text-center">
+          {!isSpotifyAuth && (
+            <>
+              <p className="my-8">
+                Find tabs on Songsterr for tracks from your Spotify playlists.
+              </p>
+              <a
+                className="bg-slate-300 drop-shadow font-medium my-8 px-4 py-2 rounded-md hover:bg-slate-200"
+                href={loginUrl}
+              >
+                Authorize Spotify
+              </a>
+            </>
+          )}
+        </div>
+        <Outlet />
+      </main>
     </div>
   );
 };
