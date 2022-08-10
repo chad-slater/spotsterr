@@ -92,7 +92,7 @@ const Track = () => {
           src={spotifyTrackData.albumArtUrl}
           alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
         />
-        <div className="flex flex-col justify-between m-4 text-center sm:text-left">
+        <div className="flex flex-col justify-between m-4 text-center w-1/3 sm:text-left">
           <h1 className="font-bold my-2 text-4xl sm:text-5xl lg:text-6xl">
             {spotifyTrackData.title}
           </h1>

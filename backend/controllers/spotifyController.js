@@ -22,7 +22,7 @@ const getPlaylist = asyncHandler(async (req, res, next) => {
     res.json(data.data);
   } catch (err) {
     const error = new Error(err.response.statusText);
-    error.stack = err.response;
+    error.stack = err.response.data;
     error.statusCode = err.response.status;
     next(error);
   }
@@ -32,16 +32,19 @@ const getPlaylist = asyncHandler(async (req, res, next) => {
 // @route GET /api/spotify/me/playlists
 const getPlaylists = asyncHandler(async (req, res, next) => {
   try {
-    const data = await axios("https://api.spotify.com/v1/me/playlists", {
-      headers: {
-        Authorization: "Bearer " + req.cookies.spotifyAccessToken,
-      },
-    });
+    const data = await axios(
+      "https://api.spotify.com/v1/me/playlists?limit=50",
+      {
+        headers: {
+          Authorization: "Bearer " + req.cookies.spotifyAccessToken,
+        },
+      }
+    );
 
     res.json(data.data);
   } catch (err) {
     const error = new Error(err.response.statusText);
-    error.stack = err.response;
+    error.stack = err.response.data;
     error.statusCode = err.response.status;
     next(error);
   }
@@ -61,7 +64,7 @@ const getTrack = asyncHandler(async (req, res, next) => {
     res.json(data.data);
   } catch (err) {
     const error = new Error(err.response.statusText);
-    error.stack = err.response;
+    error.stack = err.response.data;
     error.statusCode = err.response.status;
     next(error);
   }
@@ -83,7 +86,7 @@ const getAudioFeatures = asyncHandler(async (req, res) => {
     res.json(data.data);
   } catch (err) {
     const error = new Error(err.response.statusText);
-    error.stack = err.response;
+    error.stack = err.response.data;
     error.statusCode = err.response.status;
     next(error);
   }
