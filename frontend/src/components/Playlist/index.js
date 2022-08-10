@@ -1,27 +1,34 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { AuthContext } from "../App";
 import LoadingSpinner from "../LoadingSpinner";
 import { msToMinsSecs } from "../../utils";
+import useCheckCookies from "../../hooks/useCheckCookies";
 
 const Playlist = () => {
   const navigate = useNavigate();
   const { playlistId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSpotifyAuth, setIsSpotifyAuth] = useContext(AuthContext);
+
   const [playlistData, setPlaylistData] = useState(null);
+
+  useCheckCookies(setIsSpotifyAuth);
 
   useEffect(() => {
     let mounted = true;
 
-    (async () => {
-      const { data } = await axios(`/api/spotify/playlists/${playlistId}`);
+    isSpotifyAuth &&
+      (async () => {
+        const { data } = await axios(`/api/spotify/playlists/${playlistId}`);
 
-      return mounted && setPlaylistData(data);
-    })();
+        return mounted && setPlaylistData(data);
+      })();
 
     return () => (mounted = false);
-  }, [playlistId]);
+  }, [isSpotifyAuth, playlistId]);
 
   useEffect(() => {
     playlistData && setIsLoading(false);

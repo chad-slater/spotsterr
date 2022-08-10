@@ -86,7 +86,7 @@ const getAudioFeatures = asyncHandler(async (req, res) => {
     res.json(data.data);
   } catch (err) {
     const error = new Error(err.response.statusText);
-    error.stack = err.response.data;
+    error.stack = err.response;
     error.statusCode = err.response.status;
     next(error);
   }

@@ -1,21 +1,27 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import { AuthContext } from "../App";
 import LoadingSpinner from "../LoadingSpinner";
 import { cleanTitle, pitch, tuningNames, tuningToPitch } from "../../utils";
+import useCheckCookies from "../../hooks/useCheckCookies";
 
 const Track = () => {
   const { trackId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSpotifyAuth, setIsSpotifyAuth] = useContext(AuthContext);
   const [songsterrData, setSongsterrData] = useState("");
   const [spotifyAudioFeaturesData, setSpotifyAudioFeaturesData] = useState("");
   const [spotifyTrackData, setSpotifyTrackData] = useState("");
+
+  useCheckCookies(setIsSpotifyAuth);
 
   useEffect(() => {
     let mounted = true;
 
     mounted &&
+      isSpotifyAuth &&
       (async () => {
         const { data } = await axios(`/api/spotify/audio-features/${trackId}`);
 
@@ -23,6 +29,7 @@ const Track = () => {
       })();
 
     mounted &&
+      isSpotifyAuth &&
       (async () => {
         const { data } = await axios(`/api/spotify/track/${trackId}`);
         const cleanedTitle = cleanTitle(data.name);
@@ -36,7 +43,7 @@ const Track = () => {
       })();
 
     return () => (mounted = false);
-  }, [trackId]);
+  }, [isSpotifyAuth, trackId]);
 
   useEffect(() => {
     let mounted = true;

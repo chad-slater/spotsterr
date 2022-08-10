@@ -1,28 +1,42 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { AuthContext } from "../App";
 import LoadingSpinner from "../LoadingSpinner";
+import useCheckCookies from "../../hooks/useCheckCookies";
 
 const Playlists = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isSpotifyAuth, setIsSpotifyAuth] = useContext(AuthContext);
   const [playlists, setPlaylists] = useState(null);
+
+  useCheckCookies(setIsSpotifyAuth);
 
   useEffect(() => {
     let mounted = true;
 
-    (async () => {
-      const { data } = await axios("/api/spotify/me/playlists");
+    isSpotifyAuth &&
+      (async () => {
+        const { data } = await axios("/api/spotify/me/playlists");
 
-      return mounted && setPlaylists(data.items);
-    })();
+        return mounted && setPlaylists(data.items);
+      })();
 
     return () => (mounted = false);
-  }, [isLoading]);
+  }, [isLoading, isSpotifyAuth]);
 
   useEffect(() => {
     playlists && setIsLoading(false);
   }, [playlists]);
+
+  if (!isSpotifyAuth) {
+    return (
+      <p className="my-12 text-center">
+        Find tabs on Songsterr for tracks from your Spotify playlists.
+      </p>
+    );
+  }
 
   return isLoading ? (
     <LoadingSpinner />
