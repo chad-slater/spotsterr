@@ -20,37 +20,49 @@ const App = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <header>
-        <nav className="flex items-center justify-around">
-          <p className="font-bold my-4 text-5xl text-center sm:text-6xl">
-            <Link to={"/"}>Spotsterr</Link>
-          </p>
-        </nav>
-      </header>
+      <div className="min-h-screen">
+        <header>
+          <nav className="flex items-center justify-around">
+            <p className="font-bold my-4 text-5xl text-center sm:text-6xl">
+              <Link to={"/"}>Spotsterr</Link>
+            </p>
+          </nav>
+        </header>
 
-      <main>
-        <div className="my-8 text-center">
-          {!isSpotifyAuth && (
-            <>
-              <a
-                className="bg-slate-300 drop-shadow font-medium px-4 py-2 rounded-md hover:bg-slate-200"
-                href={loginUrl}
-              >
-                Authorize Spotify
-              </a>
-            </>
-          )}
-        </div>
+        <main>
+          <div className="my-8 text-center">
+            {!isSpotifyAuth && (
+              <>
+                <a
+                  className="bg-slate-300 drop-shadow font-medium px-4 py-2 rounded-md hover:bg-slate-200"
+                  href={loginUrl}
+                >
+                  Authorize Spotify
+                </a>
+              </>
+            )}
+          </div>
 
-        <AuthContext.Provider value={[isSpotifyAuth, setIsSpotifyAuth]}>
-          <Routes>
-            <Route index element={<Playlists />} />
-            <Route path="/playlist/:playlistId" element={<Playlist />} />
-            <Route path="/track/:trackId" element={<Track />} />
-            <Route path="*" element={<FourOhFour />} />
-          </Routes>
-        </AuthContext.Provider>
-      </main>
+          <AuthContext.Provider value={[isSpotifyAuth, setIsSpotifyAuth]}>
+            <Routes>
+              <Route index element={<Playlists />} />
+              <Route path="/playlist/:playlistId" element={<Playlist />} />
+              <Route path="/track/:trackId" element={<Track />} />
+              <Route path="*" element={<FourOhFour />} />
+            </Routes>
+          </AuthContext.Provider>
+        </main>
+      </div>
+
+      <footer className="font-medium my-8 text-center">
+        <a
+          href="https://github.com/chad-slater/spotsterr"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          View source on GitHub
+        </a>
+      </footer>
     </div>
   );
 };

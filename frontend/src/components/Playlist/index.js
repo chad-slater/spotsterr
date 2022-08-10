@@ -38,6 +38,14 @@ const Playlist = () => {
     navigate(`/track/${trackId}`);
   };
 
+  if (!isSpotifyAuth) {
+    return (
+      <p className="my-12 text-center">
+        Find tabs on Songsterr for tracks from your Spotify playlists.
+      </p>
+    );
+  }
+
   return isLoading ? (
     <LoadingSpinner />
   ) : (

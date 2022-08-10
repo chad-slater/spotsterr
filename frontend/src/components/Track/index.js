@@ -49,6 +49,7 @@ const Track = () => {
     let mounted = true;
 
     mounted &&
+      isSpotifyAuth &&
       spotifyTrackData &&
       (async () => {
         const artist = spotifyTrackData.artist;
@@ -80,7 +81,7 @@ const Track = () => {
       })();
 
     return () => (mounted = false);
-  }, [spotifyTrackData]);
+  }, [isSpotifyAuth, spotifyTrackData]);
 
   useEffect(() => {
     songsterrData &&
@@ -99,7 +100,7 @@ const Track = () => {
           src={spotifyTrackData.albumArtUrl}
           alt={`${spotifyTrackData.artist} - ${spotifyTrackData.title} album art`}
         />
-        <div className="flex flex-col justify-between m-4 text-center w-1/3 sm:text-left">
+        <div className="flex flex-col justify-between m-4 text-center sm:text-left">
           <h1 className="font-bold my-2 text-4xl sm:text-5xl lg:text-6xl">
             {spotifyTrackData.title}
           </h1>
@@ -159,7 +160,7 @@ const Track = () => {
                 <a
                   className="font-bold text-center"
                   href={`http://www.songsterr.com/a/wa/bestMatchForQueryString?s=${spotifyTrackData.title}&a=${spotifyTrackData.artist}`}
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
                   Get tabs
