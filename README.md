@@ -1,15 +1,19 @@
-# Spotsterr
+# [Spotsterr](https://spotsterr.herokuapp.com/)
 
 Find tabs on Songsterr for tracks from your Spotify playlists.
 
-https://spotsterr.herokuapp.com/
-
 ## Tech
 
-React
+[React](https://reactjs.org/)
 
-Tailwind CSS
+[Tailwind CSS](https://tailwindcss.com/)
 
-Node
+[Node.js](https://nodejs.org/en/)
 
-Express
+[Express](https://expressjs.com/)
+
+## Resources
+
+https://developer.spotify.com/
+
+https://www.songsterr.com/a/wa/api
