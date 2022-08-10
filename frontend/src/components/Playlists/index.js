@@ -32,7 +32,7 @@ const Playlists = () => {
 
   if (!isSpotifyAuth) {
     return (
-      <p className="my-12 text-center">
+      <p className="my-16 text-center">
         Find tabs on Songsterr for tracks from your Spotify playlists.
       </p>
     );

@@ -23,7 +23,7 @@ const App = () => {
       <div className="min-h-screen">
         <header>
           <nav className="flex items-center justify-around">
-            <p className="font-bold my-4 text-5xl text-center tracking-widest sm:text-6xl">
+            <p className="font-bold my-8 text-5xl text-center tracking-widest sm:text-6xl">
               <Link to={"/"}>
                 Spot<span className="bg-slate-300">sterr</span>
               </Link>
@@ -32,7 +32,7 @@ const App = () => {
         </header>
 
         <main>
-          <div className="my-8 text-center">
+          <div className="my-12 text-center">
             {!isSpotifyAuth && (
               <>
                 <a
@@ -56,8 +56,10 @@ const App = () => {
         </main>
       </div>
 
-      <footer className="font-medium my-8 text-center">
+      <footer className="my-8 text-center">
+        <span>Copyright &copy; 2022 Chad Slater - </span>
         <a
+          className="font-medium "
           href="https://github.com/chad-slater/spotsterr"
           rel="noopener noreferrer"
           target="_blank"
