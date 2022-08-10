@@ -23,8 +23,10 @@ const App = () => {
       <div className="min-h-screen">
         <header>
           <nav className="flex items-center justify-around">
-            <p className="font-bold my-4 text-5xl text-center sm:text-6xl">
-              <Link to={"/"}>Spotsterr</Link>
+            <p className="font-bold my-4 text-5xl text-center tracking-widest sm:text-6xl">
+              <Link to={"/"}>
+                Spot<span className="bg-slate-300">sterr</span>
+              </Link>
             </p>
           </nav>
         </header>
