@@ -1,6 +1,6 @@
 # [Spotsterr](https://spotsterr.herokuapp.com/)
 
-Find tabs on Songsterr for tracks from your Spotify playlists.
+Find drum/guitar tabs on Songsterr for tracks from your Spotify playlists.
 
 ## Tech
 
