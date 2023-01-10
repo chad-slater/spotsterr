@@ -1,8 +1,8 @@
-# [Spotsterr](https://spotsterr.herokuapp.com/)^
+# Spotsterr^
 
 Find drum/guitar tabs on Songsterr for tracks from your Spotify playlists.
 
-^ The app is currently in "development mode" on the Spotify API. Up to 25 users can authenticate with the app and these users need to be pre-approved. Please contact Chad to approve your Spotify account or to request a demo account.
+^ The app was previously hosted on Heroku, but has since been taken down due to the demise of Heroku's free tier.
 
 ## Tech
 
